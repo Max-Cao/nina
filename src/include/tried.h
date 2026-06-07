@@ -1,7 +1,7 @@
 #pragma once
 
-#include "./panic.h"
-#include "./typedef.h"
+#include "expected.h"
+#include "panic.h"
 #include "option.h"
 
 #define tried(...)                                                                                                                                                                 \
@@ -30,18 +30,40 @@ namespace nina {
 
 		auto get_expected(option<T> const &opt) const -> expected_t {
 			if (!is_expected(opt)) {
-				panic::unreachable();
+				unreachable();
 			}
 			return expected_t{opt.value()};
 		}
 
 		auto get_unexpected(option<T> const &opt) const -> unexpected_t {
 			if (is_expected(opt)) {
-				panic::unreachable();
+				unreachable();
 			}
 			return none;
 		}
 	};
 
+	template <typename val_t, typename err_t>
+	struct try_traits<expected<val_t, err_t>> {
+		using expected_t   = val_t;
+		using unexpected_t = err_t;
 
+		auto is_expected(expected<val_t, err_t> const &res) const -> bool {
+			return res.has_value();
+		}
+
+		auto get_expected(expected<val_t, err_t> const &res) const -> expected_t {
+			if (!is_expected(res)) {
+				unreachable();
+			}
+			return res.value();
+		}
+
+		auto get_unexpected(expected<val_t, err_t> const &res) const -> unexpected_t {
+			if (is_expected(res)) {
+				unreachable();
+			}
+			return res.error();
+		}
+	};
 } // namespace nina

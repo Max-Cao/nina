@@ -5,8 +5,8 @@
 namespace nina {
 
 	/*
-	just a simple wrapper of std::optional
-	will be re-implemented in the future
+		just a simple wrapper of std::optional
+		TODO: will be re-implemented in the future
 	*/
 	template <typename val_t>
 	struct option: public nina_alias<std::optional<val_t>> {};
