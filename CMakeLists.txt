@@ -15,3 +15,5 @@ FetchContent_MakeAvailable(fmt)
 
 target_compile_features(fmt PRIVATE cxx_std_26)
 target_link_libraries(nina PRIVATE fmt::fmt)
+
+message("-- u can use **nina** now --")
